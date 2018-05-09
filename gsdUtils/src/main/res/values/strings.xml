@@ -1,0 +1,23 @@
+<resources>
+  <string name="app_name">GsdUtils</string>
+
+  <!-- DialogManager -->
+  <string name="ok">确认</string>
+  <string name="cancel">取消</string>
+
+  <!-- time -->
+  <string name="time_yesterday">昨天</string>
+  <string name="time_day">日</string>
+  <string name="time_month">月</string>
+  <string name="time_year">年</string>
+  <string name="time_more">99+</string>
+  <string name="utils_unknown">未知</string>
+  <string name="utils_unsign">这个人很懒,什么都没留下~</string>
+
+  <string name="base_empty_text">什么也木有~</string>
+  <string name="wpk_no_network">网络开小差了..</string>
+  <string name="boxing_storage_deny">设备存储读取出错或暂不可用，请稍候重试</string>
+  <string name="un_selected">未选择</string>
+  <string name="save_failed">保存失败</string>
+  <string name="need_storage_permission">请先授予玩到存储空间权限！</string>
+</resources>

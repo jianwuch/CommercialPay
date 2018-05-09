@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@color/c25_alpha90"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+>
+  <ImageView
+      android:id="@+id/pause"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="center_vertical"
+      android:layout_marginLeft="9dp"
+      android:src="@drawable/ic_room_preview_play"/>
+
+  <SeekBar
+      android:id="@+id/mediacontroller_progress"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="-8dp"
+      android:layout_weight="1"
+      android:maxHeight="8dp"
+      android:minHeight="8dp"
+      android:progressDrawable="@drawable/gsd_video_seek_bg"
+      android:thumb="@drawable/shape_video_play_thumb"/>
+
+  <TextView
+      android:id="@+id/time_current"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="10dp"
+      android:textColor="@color/c1"
+      android:textSize="@dimen/t3"
+
+  />
+
+  <TextView
+      android:id="@+id/time"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginRight="10dp"
+      android:paddingLeft="4dp"
+      android:textColor="#ffffff"
+      android:textSize="14sp"
+      android:visibility="gone"
+  />
+
+  <ImageView
+      android:id="@+id/fullscreen"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:layout_marginRight="10dp"
+      android:background="@android:color/transparent"
+      android:maxHeight="25dp"
+      android:maxWidth="25dp"
+      android:paddingBottom="5dp"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
+      android:paddingTop="5dp"
+      android:scaleType="fitCenter"
+      android:visibility="visible"/>
+
+</LinearLayout>
+

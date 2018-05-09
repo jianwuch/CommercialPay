@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item name="titlebar" type="id"/>
+  <item name="contentFrame" type="id"/>
+  <item name="swipe_refresh_layout" type="id"/>
+  <item name="tag_first" type="id"/>
+  <item name="near_status_view" type="id"/>
+</resources>

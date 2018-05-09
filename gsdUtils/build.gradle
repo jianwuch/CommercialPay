@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
+
+android {
+  compileSdkVersion rootProject.ext.android.compileSdkVersion
+  buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+  defaultConfig {
+    minSdkVersion rootProject.ext.android.minSdkVersion
+    targetSdkVersion rootProject.ext.android.targetSdkVersion
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+dependencies {
+  implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+  api 'com.android.support:multidex:1.0.3'
+  api 'com.android.support:appcompat-v7:27.1.1'
+  api 'com.android.support:recyclerview-v7:27.1.1'
+  api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
+  api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+  api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
+  api 'com.android.support:design:27.1.0'
+  api 'com.jakewharton:butterknife:8.4.0'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+  api 'com.squareup.okhttp3:okhttp:3.8.0'
+//  api 'com.bugtags.library:bugtags-lib:latest.integration'
+  api 'com.google.code.gson:gson:2.8.2'
+//  api project(':idslogin')
+  api 'com.bilibili:boxing-impl:1.0.2'
+  implementation('com.yalantis:ucrop:2.2.0') {
+    exclude group: 'com.android.support'
+    exclude group: 'com.squareup.okio'
+    exclude group: 'com.squareup.okhttp3'
+  }
+  api 'com.github.bumptech.glide:glide:4.4.0'
+  annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+  implementation "com.github.bumptech.glide:okhttp3-integration:4.4.0"
+  api('jp.wasabeef:glide-transformations:3.0.1') {
+    exclude group: 'com.github.bumptech.glide:glide'
+    exclude group: 'com.github.bumptech.glide:compiler'
+  }
+  // If you want to use the GPU Filters
+  implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+
+  //这里有友盟
+  api 'com.umeng.analytics:analytics:latest.integration'
+  implementation 'com.bm.photoview:library:1.4.1'
+  api 'com.jaeger.statusbarutil:library:1.4.0'
+
+  api 'cn.dreamtobe.kpswitch:library:1.6.0'
+
+  //消息通知
+  api 'org.greenrobot:eventbus:3.1.1'
+}

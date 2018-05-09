@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- 通用头部属性 -->
+  <declare-styleable name="NearTitleBar">
+    <attr format="integer" name="headType"/>
+  </declare-styleable>
+
+  <declare-styleable name="RoundAngleLinearLayout">
+    <attr format="reference|dimension" name="radius"/>
+  </declare-styleable>
+
+  <declare-styleable name="ToggleTextView">
+    <attr format="reference" name="selectedDrawable"/>
+    <attr format="reference" name="unSelectedDrawable"/>
+    <attr format="color" name="selectedTextColor"/>
+    <attr format="color" name="unSelectedTextColor"/>
+  </declare-styleable>
+
+  <declare-styleable name="RoundRectImageView">
+    <attr format="integer" name="round_radius"/>
+  </declare-styleable>
+
+  <declare-styleable name="LazyViewPager">
+    <attr name="init_lazy_item_offset" format="float" />
+  </declare-styleable>
+
+</resources>

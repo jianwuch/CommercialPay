@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_near_title_root"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@color/c1">
+
+  <ImageView
+      android:id="@+id/iv_title_left"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_centerVertical="true"
+      android:paddingLeft="15dp"
+      android:paddingRight="15dp"
+      android:src="@drawable/wd_back"/>
+
+  <TextView
+      android:id="@+id/tv_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:textColor="@color/c3"
+      android:textSize="@dimen/t11"
+      android:textStyle="bold"
+      tools:text="登录"/>
+
+  <ImageView
+      android:id="@+id/iv_title"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      />
+
+  <TextView
+      android:id="@+id/tv_title_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:paddingLeft="15dp"
+      android:paddingTop="5dp"
+      android:paddingBottom="5dp"
+      android:layout_centerVertical="true"
+      android:layout_marginRight="15dp"
+      android:textColor="@drawable/selector_edit_text_color"
+      android:textSize="14sp"
+      android:visibility="gone"
+      android:textStyle="bold"
+      tools:text="注册"
+      tools:visibility="visible"/>
+
+  <ImageView
+      android:id="@+id/iv_title_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:layout_marginRight="15dp"
+      android:visibility="gone"
+      tools:visibility="visible"/>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="0.5dp"
+      android:layout_alignParentBottom="true"
+      android:background="@color/c7"/>
+</RelativeLayout>

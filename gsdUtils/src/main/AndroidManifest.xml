@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.gsd.utils">
+
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+  <application android:allowBackup="true">
+
+    <!-- 选图裁剪的界面 -->
+    <activity
+        android:name="com.yalantis.ucrop.UCropActivity"
+        android:screenOrientation="portrait"/>
+
+
+  </application>
+
+</manifest>

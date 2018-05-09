@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!--底部dailog样式-->
+  <style name="bottomDialog" parent="@android:style/Animation.Dialog">
+    <item name="android:windowIsFloating">true</item>
+    <item name="android:backgroundDimEnabled">true</item>
+  </style>
+
+  <!-- 登录模块 统一背景 -->
+  <style name="login_module_background">
+    <item name="android:background">@color/c1</item>
+  </style>
+
+  <style mce_bogus="1" name="Dialog_window_Anim" parent="android:Animation">
+    <item name="android:windowEnterAnimation">@anim/wpk_fade_scale_in</item>
+    <item name="android:windowExitAnimation">@anim/wpk_fade_scale_out</item>
+  </style>
+
+  <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <!--对话框按钮文字颜色-->
+    <item name="colorAccent">@color/near_main_color</item>
+    <!--对话框内容文字颜色-->
+    <item name="android:textColorPrimary">@color/c4</item>
+    <!--对话框背景色-->
+    <item name="android:background">@color/common_background</item>
+  </style>
+</resources>

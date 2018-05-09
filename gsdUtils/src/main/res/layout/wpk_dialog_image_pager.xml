@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:orientation="vertical">
+
+  <com.gsd.idreamsky.weplay.lazyviewpager.LazyViewPager
+      android:id="@+id/id_pager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
+  <TextView
+      android:id="@+id/id_count"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|center_horizontal"
+      android:layout_marginBottom="15dp"
+      android:background="@drawable/wpk_shape_image_count_bg"
+      android:paddingBottom="2dp"
+      android:paddingLeft="20dp"
+      android:paddingRight="20dp"
+      android:paddingTop="2dp"
+      android:textColor="@android:color/white"
+      android:textSize="16sp"
+      tools:text="2/9"/>
+
+  <ImageView
+      android:id="@+id/id_down_load"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="right|bottom"
+      android:layout_marginBottom="15dp"
+      android:layout_marginRight="10dp"
+      android:src="@drawable/wd_down_load"/>
+</FrameLayout>
