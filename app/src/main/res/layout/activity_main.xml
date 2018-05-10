@@ -6,22 +6,295 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-  <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:onClick="openAccessibility"
-      android:text="开启辅助功能权限"/>
+  <include layout="@layout/include_title_bar" />
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="我是你大爷,今天背书包去学校，看到老鼠了"
-      android:onClick="readTxt"/>
+  <android.support.v4.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1">
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="readNums"
-      android:onClick="readNum"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+      <!--头部-->
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="160dp"
+          android:background="#0891ea">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/today_income"
+              android:textColor="@color/app_white"
+              android:textSize="14dp" />
+
+          <TextView
+              android:id="@+id/today_income_value"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="16dp"
+              android:layout_marginTop="16dp"
+              android:textColor="@color/app_white"
+              android:textSize="26dp"
+              android:text="0.00" />
+
+          <TextView
+              android:id="@+id/balance"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="@color/app_white"
+              android:textSize="14dp"
+              tools:text="余额：0.00元" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginRight="17dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+          <Switch
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"></Switch>
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableRight="@drawable/help_icon"
+              android:gravity="center"
+              android:text="语音开关"
+              android:textColor="@color/app_white"
+              android:textSize="12dp" />
+        </LinearLayout>
+
+      </RelativeLayout>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="13dp"
+          android:background="#F8F7F7" />
+
+
+      <!--需要显示的订单-->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="104dp"
+          android:paddingLeft="13dp"
+          android:paddingRight="13dp"
+          android:background="@color/app_white"
+          android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableTop="@drawable/today_order_icon"
+              android:text="今日订单"
+              style="@style/TextView_Style_Order" />
+
+          <TextView
+              android:id="@+id/today_order"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="0"
+              style="@style/TextView_Style_Order_Value" />
+        </LinearLayout>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/app_devider" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableTop="@drawable/yestoday_order_icon"
+              android:text="昨日订单"
+              style="@style/TextView_Style_Order" />
+
+          <TextView
+              android:id="@+id/yestoday_order"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="0"
+              style="@style/TextView_Style_Order_Value" />
+        </LinearLayout>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/app_devider" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableTop="@drawable/seven_day_order_icon"
+              android:text="7天订单"
+              style="@style/TextView_Style_Order" />
+
+          <TextView
+              android:id="@+id/seven_order"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="0"
+              style="@style/TextView_Style_Order_Value" />
+        </LinearLayout>
+      </LinearLayout>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:layout_marginLeft="13dp"
+          android:layout_marginRight="13dp"
+          android:background="@color/app_devider" />
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="104dp"
+          android:paddingLeft="13dp"
+          android:paddingRight="13dp"
+          android:background="@color/app_white"
+          android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableTop="@drawable/yestoday_income"
+              android:text="昨日收入"
+              style="@style/TextView_Style_Order" />
+
+          <TextView
+              android:id="@+id/yestoday_income"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="0"
+              style="@style/TextView_Style_Order_Value" />
+        </LinearLayout>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/app_devider" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableTop="@drawable/seven_days_income_icon"
+              android:text="7天收入"
+              style="@style/TextView_Style_Order" />
+
+          <TextView
+              android:id="@+id/seven_income"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="0"
+              style="@style/TextView_Style_Order_Value" />
+        </LinearLayout>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/app_devider" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableTop="@drawable/thirty_days_income_icon"
+              android:text="30天收入"
+              style="@style/TextView_Style_Order" />
+
+          <TextView
+              android:id="@+id/thirty_day_income"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="0"
+              style="@style/TextView_Style_Order_Value" />
+        </LinearLayout>
+      </LinearLayout>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="13dp"
+          android:background="#F8F7F7" />
+
+      <TextView
+          android:id="@+id/btn_detail_order"
+          android:layout_width="match_parent"
+          android:layout_height="49dp"
+          android:text="详细账单"
+          style="@style/TextView_Style_more" />
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="13dp"
+          android:background="#F8F7F7" />
+
+      <TextView
+          android:id="@+id/btn_charge"
+          android:layout_width="match_parent"
+          android:layout_height="49dp"
+          android:text="充值"
+          style="@style/TextView_Style_more" />
+
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:background="#F8F7F7" />
+    </LinearLayout>
+
+  </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>
