@@ -28,6 +28,9 @@ public class Speaker implements TextToSpeech.OnInitListener {
 
     public void allow(boolean allowed) {
         this.allowed = allowed;
+        if (allowed) {
+            stop();
+        }
     }
 
     @Override
@@ -60,6 +63,12 @@ public class Speaker implements TextToSpeech.OnInitListener {
 
     public void pause(int duration) {
         tts.playSilence(duration, TextToSpeech.QUEUE_ADD, null);
+    }
+
+    public void stop() {
+        if (ready && tts.isSpeaking()) {
+            tts.stop();
+        }
     }
 
     // Free up resources

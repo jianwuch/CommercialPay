@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.jianwu.commercialpay.service.NotificationCaptureByAccessibility;
+import com.jianwu.commercialpay.util.Permission;
 import java.util.Locale;
 import org.w3c.dom.Text;
 
@@ -28,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         //    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
         //}
         initTTS();
+
+        //检查是否开启NotificationCaptureByAccessibility的辅助权限
+        if (!Permission.isAccessibilitySettingsOn(MainActivity.this,
+                NotificationCaptureByAccessibility.class)) {
+            startAccessibilityService();
+        }
     }
 
     /**
@@ -63,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void readTxt(View view) {
-        textToSpeech.speak(((TextView) view).getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+        textToSpeech.speak(((TextView) view).getText().toString(), TextToSpeech.QUEUE_ADD, null);
     }
 
     private void initTTS() {
