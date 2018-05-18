@@ -15,7 +15,7 @@ public class Speaker implements TextToSpeech.OnInitListener {
 
     private boolean ready = false;
 
-    private boolean allowed = false;
+    public static boolean allowed = true;
 
     public Speaker(Context context) {
         this.mContext = context;

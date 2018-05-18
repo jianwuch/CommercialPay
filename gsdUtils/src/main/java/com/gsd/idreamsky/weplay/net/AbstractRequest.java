@@ -59,6 +59,8 @@ public abstract class AbstractRequest {
 
 //        appendSign(url, hm);
 
+        hm = changeRequestParams(hm);
+
         Map<String, String> headerMap = generateHeader(GET, url);
         String newTag = checkTag(tag);
 
@@ -67,6 +69,12 @@ public abstract class AbstractRequest {
                 .build()
                 .execute(callback);
     }
+
+    /**
+     * 对请求参数对修改
+     * @param hm
+     */
+    protected abstract HashMap changeRequestParams(HashMap<String, String> hm);
 
     private void appendSign(String url, HashMap<String, String> paramsMap) {
 
@@ -100,7 +108,7 @@ public abstract class AbstractRequest {
         addCommonBody(hm, url);
 
 //        appendSign(url, hm);
-
+        hm = changeRequestParams(hm);
         Map<String, String> headerMap = generateHeader(POST, url);
         String newTag = checkTag(tag);
 

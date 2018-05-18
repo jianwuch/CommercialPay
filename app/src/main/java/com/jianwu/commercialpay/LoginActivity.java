@@ -35,6 +35,7 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.btn_login)
     public void toMainPage() {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }
 

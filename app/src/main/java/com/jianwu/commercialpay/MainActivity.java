@@ -3,39 +3,71 @@ package com.jianwu.commercialpay;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Process;
 import android.provider.Settings;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.view.KeyEvent;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import com.gsd.idreamsky.weplay.utils.SharePrefUtil;
+import com.jianwu.commercialpay.config.Config;
 import com.jianwu.commercialpay.service.NotificationCaptureByAccessibility;
 import com.jianwu.commercialpay.util.Permission;
-import java.util.Locale;
-import org.w3c.dom.Text;
+import com.jianwu.commercialpay.util.Speaker;
 
 public class MainActivity extends AppCompatActivity {
-    private TextToSpeech textToSpeech;
+
+    @BindView(R.id.actionbar_back) ImageView actionbarBack;
+    @BindView(R.id.actionbar_title) TextView actionbarTitle;
+    @BindView(R.id.actionbar_right_menu) TextView actionbarRightMenu;
+    @BindView(R.id.today_income_value) TextView todayIncomeValue;
+    @BindView(R.id.balance) TextView balance;
+    @BindView(R.id.today_order) TextView todayOrder;
+    @BindView(R.id.yestoday_order) TextView yestodayOrder;
+    @BindView(R.id.seven_order) TextView sevenOrder;
+    @BindView(R.id.yestoday_income) TextView yestodayIncome;
+    @BindView(R.id.seven_income) TextView sevenIncome;
+    @BindView(R.id.thirty_day_income) TextView thirtyDayIncome;
+    @BindView(R.id.btn_detail_order) TextView btnDetailOrder;
+    @BindView(R.id.btn_charge) TextView btnCharge;
+
+    private long exitTime = 0;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        loadSetting();
 
         ////1.开启通知监听服务
         //if (!isNotificationServiceEnable()) {
         //    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
         //}
-        initTTS();
 
         //检查是否开启NotificationCaptureByAccessibility的辅助权限
         if (!Permission.isAccessibilitySettingsOn(MainActivity.this,
                 NotificationCaptureByAccessibility.class)) {
             startAccessibilityService();
         }
+    }
+
+    /**
+     * 获取配置相关参数
+     */
+    private void loadSetting() {
+        boolean enableVoice =
+                SharePrefUtil.getBoolean(Config.SP_CONFIG_NAME, Config.KEY_ENABLE_VOICE, false);
+        Speaker.allowed = enableVoice;
     }
 
     /**
@@ -66,49 +98,31 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void openAccessibility(View view) {
-        startAccessibilityService();
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
-    public void readTxt(View view) {
-        textToSpeech.speak(((TextView) view).getText().toString(), TextToSpeech.QUEUE_ADD, null);
+    public void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+
+            Process.killProcess(Process.myPid());   //获取PID
+            System.exit(0);
+        }
     }
 
-    private void initTTS() {
-        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == textToSpeech.SUCCESS) {
-                    int result = textToSpeech.setLanguage(Locale.CHINA);
-                    if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE
-                            && result != TextToSpeech.LANG_AVAILABLE) {
-                        Toast.makeText(MainActivity.this, "TTS暂时不支持这种语音的朗读！", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                }
-            }
-        });
-        textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-            @Override
-            public void onStart(String utteranceId) {
-
-            }
-
-            @Override
-            public void onDone(String utteranceId) {
-                textToSpeech.stop();
-                textToSpeech.shutdown();
-            }
-
-            @Override
-            public void onError(String utteranceId) {
-                textToSpeech.stop();
-                textToSpeech.shutdown();
-            }
-        });
-    }
-
-    public void readNum(View view) {
-        textToSpeech.speak("100分，0.01元", TextToSpeech.QUEUE_FLUSH, null);
+    /** 以下是点击事件 */
+    @OnClick(R.id.actionbar_back)
+    public void back() {
+        exit();
     }
 }

@@ -5,9 +5,17 @@ import android.app.Notification;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+import com.jianwu.commercialpay.util.Speaker;
 
 public class NotificationCaptureByAccessibility extends AccessibilityService {
     private static final String TAG = NotificationCaptureByAccessibility.class.getSimpleName();
+    private Speaker mSpeaker;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        initTTS();
+    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -31,6 +39,8 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
                         + title
                         + "\nText:"
                         + text);
+
+                mSpeaker.speak("哈哈" + text);
             }
         }
     }
@@ -38,5 +48,13 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
     @Override
     public void onInterrupt() {
 
+    }
+
+    public void readTxt(String text) {
+        mSpeaker.speak(text);
+    }
+
+    private void initTTS() {
+        mSpeaker = new Speaker(this);
     }
 }
