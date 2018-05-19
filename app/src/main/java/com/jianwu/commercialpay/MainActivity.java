@@ -10,33 +10,52 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import android.widget.ToggleButton;
+
 import com.gsd.idreamsky.weplay.utils.SharePrefUtil;
 import com.jianwu.commercialpay.config.Config;
 import com.jianwu.commercialpay.service.NotificationCaptureByAccessibility;
 import com.jianwu.commercialpay.util.Permission;
 import com.jianwu.commercialpay.util.Speaker;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.actionbar_back) ImageView actionbarBack;
-    @BindView(R.id.actionbar_title) TextView actionbarTitle;
-    @BindView(R.id.actionbar_right_menu) TextView actionbarRightMenu;
-    @BindView(R.id.today_income_value) TextView todayIncomeValue;
-    @BindView(R.id.balance) TextView balance;
-    @BindView(R.id.today_order) TextView todayOrder;
-    @BindView(R.id.yestoday_order) TextView yestodayOrder;
-    @BindView(R.id.seven_order) TextView sevenOrder;
-    @BindView(R.id.yestoday_income) TextView yestodayIncome;
-    @BindView(R.id.seven_income) TextView sevenIncome;
-    @BindView(R.id.thirty_day_income) TextView thirtyDayIncome;
-    @BindView(R.id.btn_detail_order) TextView btnDetailOrder;
-    @BindView(R.id.btn_charge) TextView btnCharge;
+    @BindView(R.id.actionbar_back)
+    ImageView actionbarBack;
+    @BindView(R.id.actionbar_title)
+    TextView actionbarTitle;
+    @BindView(R.id.actionbar_right_menu)
+    TextView actionbarRightMenu;
+    @BindView(R.id.today_income_value)
+    TextView todayIncomeValue;
+    @BindView(R.id.balance)
+    TextView balance;
+    @BindView(R.id.today_order)
+    TextView todayOrder;
+    @BindView(R.id.yestoday_order)
+    TextView yestodayOrder;
+    @BindView(R.id.seven_order)
+    TextView sevenOrder;
+    @BindView(R.id.yestoday_income)
+    TextView yestodayIncome;
+    @BindView(R.id.seven_income)
+    TextView sevenIncome;
+    @BindView(R.id.thirty_day_income)
+    TextView thirtyDayIncome;
+    @BindView(R.id.btn_detail_order)
+    TextView btnDetailOrder;
+    @BindView(R.id.btn_charge)
+    TextView btnCharge;
+    @BindView(R.id.voice_show_btn)
+    ToggleButton voiceShowBtn;
 
     private long exitTime = 0;
     private Handler mHandler;
@@ -59,6 +78,17 @@ public class MainActivity extends AppCompatActivity {
                 NotificationCaptureByAccessibility.class)) {
             startAccessibilityService();
         }
+
+        initEvent();
+    }
+
+    private void initEvent() {
+        voiceShowBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharePrefUtil.putBoolean(Config.SP_CONFIG_NAME, Config.KEY_ENABLE_VOICE, isChecked);
+            }
+        });
     }
 
     /**
@@ -68,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         boolean enableVoice =
                 SharePrefUtil.getBoolean(Config.SP_CONFIG_NAME, Config.KEY_ENABLE_VOICE, false);
         Speaker.allowed = enableVoice;
+        voiceShowBtn.setChecked(enableVoice);
     }
 
     /**
@@ -120,7 +151,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /** 以下是点击事件 */
+    /**
+     * 以下是点击事件
+     */
     @OnClick(R.id.actionbar_back)
     public void back() {
         exit();

@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import butterknife.ButterKnife;
+
 import com.gsd.idreamsky.weplay.net.AbstractRequest;
 import com.gsd.idreamsky.weplay.utils.ActivityUtil;
 import com.gsd.idreamsky.weplay.utils.LogUtil;
@@ -25,10 +25,12 @@ import com.gsd.idreamsky.weplay.utils.ToastUtil;
 import com.gsd.idreamsky.weplay.widget.LoadingDialog;
 import com.gsd.idreamsky.weplay.widget.NearTitleBar;
 import com.gsd.utils.R;
-import com.jaeger.library.StatusBarUtil;
 import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by magical.zhang on 2017/3/16.
@@ -131,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 修改状态栏颜色
      */
     protected void setStatusBar() {
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.c1), 0);
+//        StatusBarUtil.setColor(this, getResources().getColor(R.color.c1), 0);
     }
 
     /**

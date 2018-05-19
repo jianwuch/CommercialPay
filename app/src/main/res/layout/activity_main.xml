@@ -67,11 +67,18 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="17dp"
             android:layout_marginRight="17dp"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="vertical">
-          <Switch
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"></Switch>
+          <ToggleButton
+              android:id="@+id/voice_show_btn"
+              android:layout_width="33dp"
+              android:layout_height="28dp"
+              android:gravity="center"
+              android:button="@drawable/voice_bg"
+              android:background="#00000000"
+              android:checked="true"
+              android:textOff="@null"
+              android:textOn="@null"/>
 
           <TextView
               android:layout_width="wrap_content"
