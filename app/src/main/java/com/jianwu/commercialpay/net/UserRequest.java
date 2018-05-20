@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class UserRequest {
     private static final int ALI_PAY = 1;
     private static final int WE_CHAT = 2;
+
     public static void login(Object object, String name, String psw, final AppNetCallback callback) {
         HashMap<String, String> map = new HashMap();
         map.put("email", name);
@@ -26,26 +27,28 @@ public class UserRequest {
 
     /**
      * 上传支付宝转账
+     *
      * @param object
      * @param payTime
      * @param price
      * @param payExtra
      * @param callback
      */
-    private static void uploadAliExchangeInfo(Object object, long payTime, String price, String payExtra, AppNetCallback callback) {
+    private static void uploadAliExchangeInfo(Object object, String payTime, String price, String payExtra, AppNetCallback callback) {
         uploadExchangeInfo(object, payTime, price, ALI_PAY, payExtra, callback);
     }
 
     /**
      * 上传微信转账
+     *
      * @param object
      * @param payTime
      * @param price
      * @param payExtra
      * @param callback
      */
-    private static void uploadWechatExchangeInfo(Object object, long payTime, String price, String payExtra, AppNetCallback callback) {
-        uploadExchangeInfo(object, payTime, price, ALI_PAY, payExtra, callback);
+    private static void uploadWechatExchangeInfo(Object object, String payTime, String price, String payExtra, AppNetCallback callback) {
+        uploadExchangeInfo(object, payTime, price, WE_CHAT, payExtra, callback);
     }
 
     /**
@@ -57,7 +60,12 @@ public class UserRequest {
      * @param payExtra 额外消息
      * @param callback
      */
-    private static void uploadExchangeInfo(Object object, long payTime, String price, int payType, String payExtra, AppNetCallback callback) {
-
+    private static void uploadExchangeInfo(Object object, String payTime, String price, int payType, String payExtra, AppNetCallback callback) {
+        HashMap<String, String> map = new HashMap();
+        map.put("pay_time", payTime);
+        map.put("price", price);
+        map.put("pay_type", payType + "");
+        map.put("pay_extra", payExtra);
+        EncriptRequest.getInstance().get(object, Config.UPLOAD_EXCHANGE_URL, map, callback);
     }
 }

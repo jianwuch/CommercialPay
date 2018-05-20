@@ -6,6 +6,8 @@ public class Config {
     public static final String BASE_HOST = "http://api.wapspay.com";
     public static final String LOGIN_URL = BASE_HOST+"/login";
     public static final String INCOME_URL = BASE_HOST+"/counter";
+    public static final String UPLOAD_EXCHANGE_URL = BASE_HOST+"/trans";
+
 
 
     //本地数据保存
