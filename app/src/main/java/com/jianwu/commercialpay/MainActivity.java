@@ -16,8 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.gson.Gson;
 import com.gsd.idreamsky.weplay.utils.SharePrefUtil;
+import com.gsd.idreamsky.weplay.utils.SnackBarUtil;
+import com.gsd.idreamsky.weplay.utils.ToastUtil;
 import com.jianwu.commercialpay.config.Config;
+import com.jianwu.commercialpay.model.IncomeInfo;
+import com.jianwu.commercialpay.net.AppNetCallback;
+import com.jianwu.commercialpay.net.UserRequest;
 import com.jianwu.commercialpay.service.NotificationCaptureByAccessibility;
 import com.jianwu.commercialpay.util.Permission;
 import com.jianwu.commercialpay.util.Speaker;
@@ -80,6 +86,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         initEvent();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadHttpData();
+    }
+
+    private void loadHttpData() {
+        UserRequest.getIncomeInfo(this, new AppNetCallback() {
+            @Override
+            public void onSuccess(String data, String msg) {
+                IncomeInfo incomeInfo = new Gson().fromJson(data, IncomeInfo.class);
+                if (null != incomeInfo) {
+                    todayIncomeValue.setText(incomeInfo.todayMoney);
+                    todayOrder.setText(incomeInfo.todayOrders);
+                    yestodayOrder.setText(incomeInfo.yesterdayOrders);
+                    sevenOrder.setText(incomeInfo.sevenOrders);
+                    yestodayIncome.setText(incomeInfo.yesterdayMoney);
+                    sevenIncome.setText(incomeInfo.sevenMoney);
+                    thirtyDayIncome.setText(incomeInfo.monthMoney);
+                } else {
+                    SnackBarUtil.showShort(actionbarBack, "获取订单信息为null");
+                }
+            }
+
+            @Override
+            public void onFailed(Exception e, int id, String msg) {
+                SnackBarUtil.showShort(actionbarBack, "获取订单信息失败[id:" + id + "|msg:" + msg + "]");
+            }
+        });
     }
 
     private void initEvent() {
@@ -157,5 +194,15 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.actionbar_back)
     public void back() {
         exit();
+    }
+
+    @OnClick(R.id.btn_detail_order)
+    public void detailOrder() {
+        ToastUtil.showShort("详细账单");
+    }
+
+    @OnClick(R.id.btn_charge)
+    public void charge() {
+        ToastUtil.showShort("充值");
     }
 }
