@@ -79,8 +79,8 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
         mBuilder.setAutoCancel(false);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
         mBuilder.setLargeIcon(((BitmapDrawable) getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap());
-        mBuilder.setContentText("thisiscontent");
-        mBuilder.setContentTitle("this is title");
+        mBuilder.setContentText("接单中");
+        mBuilder.setContentTitle("万付宝服务");
         return mBuilder.build();
     }
 }
