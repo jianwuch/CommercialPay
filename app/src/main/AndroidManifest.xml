@@ -3,6 +3,9 @@
     package="com.jianwu.commercialpay">
 
   <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <application
       android:name=".APPApplication"
       android:allowBackup="true"
@@ -14,6 +17,7 @@
     <activity
         android:name=".LoginActivity"
         android:label="@string/app_name"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme.Main">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

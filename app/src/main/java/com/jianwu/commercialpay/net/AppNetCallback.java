@@ -16,7 +16,7 @@ public abstract class AppNetCallback extends JsonCallback {
     public void onResponse(JSONObject response, int id) {
         int code = response.optInt("code");
         String msg = response.optString("msg");
-        if (code == 0) {
+        if (code == 1) {
             onSuccess(response.optString("data"), msg);
         } else {
             onFailed(new IllegalArgumentException("服务端返回错误,code != 0"), code, msg);

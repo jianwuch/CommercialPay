@@ -1,5 +1,6 @@
 package com.jianwu.commercialpay.net;
 
+import android.text.TextUtils;
 import com.jianwu.commercialpay.config.Config;
 
 import java.util.HashMap;
@@ -12,6 +13,9 @@ public class UserRequest {
         HashMap<String, String> map = new HashMap();
         map.put("email", name);
         map.put("password", psw);
+        //map.put("uid", "11111");
+        //map.put("token", "123456");
+
         EncriptRequest.getInstance().get(object, Config.LOGIN_URL, map, callback);
     }
 
@@ -34,7 +38,7 @@ public class UserRequest {
      * @param payExtra
      * @param callback
      */
-    private static void uploadAliExchangeInfo(Object object, String payTime, String price, String payExtra, AppNetCallback callback) {
+    public static void uploadAliExchangeInfo(Object object, String payTime, String price, String payExtra, AppNetCallback callback) {
         uploadExchangeInfo(object, payTime, price, ALI_PAY, payExtra, callback);
     }
 
@@ -47,7 +51,7 @@ public class UserRequest {
      * @param payExtra
      * @param callback
      */
-    private static void uploadWechatExchangeInfo(Object object, String payTime, String price, String payExtra, AppNetCallback callback) {
+    public static void uploadWechatExchangeInfo(Object object, String payTime, String price, String payExtra, AppNetCallback callback) {
         uploadExchangeInfo(object, payTime, price, WE_CHAT, payExtra, callback);
     }
 
@@ -63,7 +67,9 @@ public class UserRequest {
     private static void uploadExchangeInfo(Object object, String payTime, String price, int payType, String payExtra, AppNetCallback callback) {
         HashMap<String, String> map = new HashMap();
         map.put("pay_time", payTime);
-        map.put("price", price);
+        if (!TextUtils.isEmpty(price)) {
+            map.put("price", price);
+        }
         map.put("pay_type", payType + "");
         map.put("pay_extra", payExtra);
         EncriptRequest.getInstance().get(object, Config.UPLOAD_EXCHANGE_URL, map, callback);

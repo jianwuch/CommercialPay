@@ -43,6 +43,11 @@ public class LoginActivity extends BaseActivity {
     protected void handleChildLogic(@Nullable Bundle savedInstanceState) {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        if (BuildConfig.DEBUG) {
+            account.setText("575956381@qq.com");
+            password.setText("123456789");
+        }
     }
 
     @OnClick(R.id.btn_login)
@@ -58,6 +63,7 @@ public class LoginActivity extends BaseActivity {
             ToastUtil.showShort("请输入登录密码");
             return;
         }
+
 
         UserRequest.login(this, nameStr, passwordStr, new AppNetCallback() {
             @Override
@@ -83,6 +89,12 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFailed(Exception e, int id, String msg) {
                 ToastUtil.showShort("登录失败id:" + id + "msg:" + msg);
+
+                // TODO: 2018/5/23 测试代码
+                if (BuildConfig.DEBUG) {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    return;
+                }
             }
         });
     }
