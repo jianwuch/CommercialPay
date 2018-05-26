@@ -14,7 +14,6 @@ import com.jianwu.commercialpay.R;
 import com.jianwu.commercialpay.net.AppNetCallback;
 import com.jianwu.commercialpay.net.UserRequest;
 import com.jianwu.commercialpay.util.Speaker;
-import org.w3c.dom.Text;
 
 public class NotificationCaptureByAccessibility extends AccessibilityService {
     private static final String WECHAT_NAME = "com.tencent.mm";
@@ -66,6 +65,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
 
     /**
      * 阿里支付转账情况
+     *
      * @param title
      * @param text
      */
