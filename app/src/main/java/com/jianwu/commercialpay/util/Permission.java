@@ -1,11 +1,14 @@
 package com.jianwu.commercialpay.util;
 
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import com.jianwu.commercialpay.service.NotificationCaptureByAccessibility;
+import android.view.accessibility.AccessibilityManager;
+import com.jianwu.commercialpay.APPApplication;
+import java.util.List;
 
 public class Permission {
 
@@ -20,9 +23,7 @@ public class Permission {
             Context mContext, Class<T> acbsClassString) {
         int accessibilityEnabled = 0;
         // TestService为对应的服务
-        final String service = mContext.getPackageName()
-                + "/"
-                + acbsClassString.getCanonicalName();
+        final String service = mContext.getPackageName() + "/" + acbsClassString.getCanonicalName();
         Log.i(TAG, "service:" + service);
         try {
             accessibilityEnabled =
@@ -60,6 +61,28 @@ public class Permission {
             }
         } else {
             Log.v(TAG, "***ACCESSIBILITY IS DISABLED***");
+        }
+        return false;
+    }
+
+    /**
+     * Check当前辅助服务是否启用
+     *
+     * @param serviceName serviceName
+     * @return 是否启用
+     * @deprecated
+     */
+    public static boolean checkAccessibilityEnabled(String serviceName) {
+        AccessibilityManager mAccessibilityManager =
+                (AccessibilityManager) APPApplication.INSTANCE.getSystemService(
+                        Context.ACCESSIBILITY_SERVICE);
+        List<AccessibilityServiceInfo> accessibilityServices =
+                mAccessibilityManager.getEnabledAccessibilityServiceList(
+                        AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        for (AccessibilityServiceInfo info : accessibilityServices) {
+            if (info.getId().equals(serviceName)) {
+                return true;
+            }
         }
         return false;
     }

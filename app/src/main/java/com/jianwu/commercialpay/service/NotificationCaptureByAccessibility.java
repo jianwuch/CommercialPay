@@ -1,36 +1,60 @@
 package com.jianwu.commercialpay.service;
 
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.annotation.TargetApi;
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
-
+import android.view.accessibility.AccessibilityManager;
 import com.gsd.idreamsky.weplay.utils.LogUtil;
 import com.jianwu.commercialpay.R;
 import com.jianwu.commercialpay.net.AppNetCallback;
 import com.jianwu.commercialpay.net.UserRequest;
 import com.jianwu.commercialpay.util.Speaker;
-import org.w3c.dom.Text;
+import java.util.Iterator;
+import java.util.List;
 
 public class NotificationCaptureByAccessibility extends AccessibilityService {
     private static final String WECHAT_NAME = "com.tencent.mm";
     private static final String ALIPAY_NAME = "com.eg.android.AlipayGphone";
     private static final String TAG = NotificationCaptureByAccessibility.class.getSimpleName();
     private Speaker mSpeaker;
+    private static NotificationCaptureByAccessibility service;
 
     @Override
     public void onCreate() {
         super.onCreate();
         initTTS();
+        Log.d(TAG, "onCreate");
+    }
+
+    protected void onServiceConnected() {
+        Log.d(TAG, "onServiceConnected");
+        service = this;
+        //代码设置service 也可以在清单文件中设置
+        AccessibilityServiceInfo info = new AccessibilityServiceInfo();
+        info.eventTypes = AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED
+                | AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+                | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
+        info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
+        info.notificationTimeout = 100;
+        info.packageNames = new String[] {
+                "com.tencent.mobileqq", "com.tencent.mm", "com.eg.android.AlipayGphone"
+        };
+        setServiceInfo(info);
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
+        Log.d(TAG, "com.eg.android.AlipayGphone");
         //判断辅助服务触发的事件是否是通知栏改变事件
         if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) {
 
@@ -43,7 +67,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
                 Notification notification = (Notification) data;
                 CharSequence title = notification.extras.getCharSequence(Notification.EXTRA_TITLE);
                 CharSequence text = notification.extras.getCharSequence(Notification.EXTRA_TEXT);
-                Log.d(TAG, "NLS-->"
+                Log.d(TAG, "NotificationCaptureByAccessibility-->"
                         + "\napp pkn"
                         + event.getPackageName()
                         + "\nTitle:"
@@ -66,8 +90,6 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
 
     /**
      * 阿里支付转账情况
-     * @param title
-     * @param text
      */
     private void exchangeByAliPay(CharSequence title, CharSequence text) {
 
@@ -135,7 +157,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
 
         //设置通知默认效果
         notification.flags = Notification.FLAG_SHOW_LIGHTS;
-        startForeground(1, notification);
+        startForeground(110, notification);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -162,5 +184,38 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
         mBuilder.setContentText("接单中");
         mBuilder.setContentTitle("万付宝服务");
         return mBuilder.build();
+    }
+
+    /**
+     * 判断当前服务是否正在运行
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public static boolean isRunning() {
+        if (service == null) {
+            return false;
+        }
+        AccessibilityManager accessibilityManager =
+                (AccessibilityManager) service.getSystemService(Context.ACCESSIBILITY_SERVICE);
+        AccessibilityServiceInfo info = service.getServiceInfo();
+        if (info == null) {
+            return false;
+        }
+        List<AccessibilityServiceInfo> list =
+                accessibilityManager.getEnabledAccessibilityServiceList(
+                        AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        Iterator<AccessibilityServiceInfo> iterator = list.iterator();
+
+        boolean isConnect = false;
+        while (iterator.hasNext()) {
+            AccessibilityServiceInfo i = iterator.next();
+            if (i.getId().equals(info.getId())) {
+                isConnect = true;
+                break;
+            }
+        }
+        if (!isConnect) {
+            return false;
+        }
+        return true;
     }
 }
