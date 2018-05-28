@@ -40,9 +40,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
         service = this;
         //代码设置service 也可以在清单文件中设置
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
-        info.eventTypes = AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED
-                | AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
-                | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
+        info.eventTypes = AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
         info.notificationTimeout = 100;
         info.packageNames = new String[] {
@@ -67,6 +65,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
                 Notification notification = (Notification) data;
                 CharSequence title = notification.extras.getCharSequence(Notification.EXTRA_TITLE);
                 CharSequence text = notification.extras.getCharSequence(Notification.EXTRA_TEXT);
+                CharSequence ticker = notification.tickerText;//支付宝专用
                 Log.d(TAG, "NotificationCaptureByAccessibility-->"
                         + "\napp pkn"
                         + event.getPackageName()
@@ -82,7 +81,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
                 if (packageName.equals(WECHAT_NAME)) {
                     exchangeByWechat(title, text);
                 } else if (packageName.equals(ALIPAY_NAME)) {
-                    exchangeByAliPay(title, text);
+                    exchangeByAliPay(title, ticker);
                 }
             }
         }
@@ -90,9 +89,28 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
 
     /**
      * 阿里支付转账情况
+     * "你有1笔新的资金到账，请点击查看详情"
      */
     private void exchangeByAliPay(CharSequence title, CharSequence text) {
+        String textStr = text.toString();
 
+        //转账的情况
+        if (textStr.contains("到账")) {
+            String payTime = System.currentTimeMillis() + "";
+            UserRequest.uploadAliExchangeInfo(this, payTime, "", "", new AppNetCallback() {
+                @Override
+                public void onSuccess(String data, String msg) {
+                    LogUtil.d(TAG, "成功[" + msg + msg + "]");
+                }
+
+                @Override
+                public void onFailed(Exception e, int id, String msg) {
+                    LogUtil.e(TAG, "失败[" + id + ",msg" + msg + "]");
+                }
+            });
+        } else if () {
+            //固定金额二维码情况
+        }
     }
 
     /**
