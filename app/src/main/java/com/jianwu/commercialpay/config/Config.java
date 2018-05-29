@@ -11,7 +11,9 @@ public class Config {
     public static final String INCOME_URL = BASE_HOST+"/counter";
     public static final String UPLOAD_EXCHANGE_URL = BASE_HOST+"/trans";
 
-
+    //内部链接跳转
+    public static String order_url = "http://pay.service.wapwei.com/order/myOrder";
+    public static String rechare_url = "http://pay.service.wapwei.com/user/myCounter";
 
     //本地数据保存
     public static final String SP_CONFIG_NAME = "setting";

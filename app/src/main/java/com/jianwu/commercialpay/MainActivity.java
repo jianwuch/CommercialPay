@@ -11,7 +11,9 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.google.gson.Gson;
 import com.gsd.idreamsky.weplay.utils.SharePrefUtil;
 import com.gsd.idreamsky.weplay.utils.SnackBarUtil;
 import com.gsd.idreamsky.weplay.utils.ToastUtil;
+import com.jianwu.commercialpay.base.WebViewActivity;
 import com.jianwu.commercialpay.config.Config;
 import com.jianwu.commercialpay.model.IncomeInfo;
 import com.jianwu.commercialpay.net.AppNetCallback;
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.actionbar_title) TextView actionbarTitle;
     @BindView(R.id.actionbar_right_menu) TextView actionbarRightMenu;
     @BindView(R.id.today_income_value) TextView todayIncomeValue;
-    @BindView(R.id.balance) TextView balance;
+    @BindView(R.id.balance) TextView balanceTV;
     @BindView(R.id.today_order) TextView todayOrder;
     @BindView(R.id.yestoday_order) TextView yestodayOrder;
     @BindView(R.id.seven_order) TextView sevenOrder;
@@ -59,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        //
+        actionbarTitle.setText("账户");
+        actionbarRightMenu.setVisibility(View.GONE);
 
         loadSetting();
 
@@ -102,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
                     yestodayIncome.setText(incomeInfo.yesterdayMoney);
                     sevenIncome.setText(incomeInfo.sevenMoney);
                     thirtyDayIncome.setText(incomeInfo.monthMoney);
+
+                    //余额
+                    if (!TextUtils.isEmpty(incomeInfo.balance)) {
+                        balanceTV.setText(
+                                String.format(getResources().getString(R.string.balance_formate),
+                                        incomeInfo.balance));
+                    }
                 } else {
                     SnackBarUtil.showShort(actionbarBack, "获取订单信息为null");
                 }
@@ -149,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     private void startAccessibilityService() {
         new AlertDialog.Builder(this).setTitle("开启辅助功能")
                 .setIcon(R.mipmap.ic_launcher)
-                .setMessage("使用此项功能需要您开启辅助功能")
+                .setMessage("使用此项功能需要您开启辅助功能,在接下来的跳转页面中找到“万户宝-需要打开”，进入并打开")
                 .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -194,20 +208,12 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_detail_order)
     public void detailOrder() {
-        ToastUtil.showShort("详细账单");
+        WebViewActivity.show(this, Config.order_url);
     }
 
     @OnClick(R.id.btn_charge)
     public void charge() {
-        ToastUtil.showShort("充值");
-        if (isServiceRunning(this, NotificationCaptureByAccessibility.class.getName())) {
-            ToastUtil.showShort("服务存在");
-        } else {
-
-            //再次启动Service
-            Intent intentFive = new Intent(this, NotificationCaptureByAccessibility.class);
-            startService(intentFive);
-        }
+        WebViewActivity.show(this, Config.rechare_url);
     }
 
     /**

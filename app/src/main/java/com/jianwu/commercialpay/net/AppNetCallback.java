@@ -9,7 +9,7 @@ import okhttp3.Call;
 public abstract class AppNetCallback extends JsonCallback {
     @Override
     public void onError(Call call, Exception e, int id) {
-        onFailed(e, id, "请求框架失败");
+        onFailed(e, id, "okhttp框架报的失败");
     }
 
     @Override

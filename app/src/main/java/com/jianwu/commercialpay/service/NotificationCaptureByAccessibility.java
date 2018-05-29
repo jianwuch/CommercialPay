@@ -32,11 +32,11 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
     public void onCreate() {
         super.onCreate();
         initTTS();
-        Log.d(TAG, "onCreate");
+        LogUtil.d(TAG, "onCreate");
     }
 
     protected void onServiceConnected() {
-        Log.d(TAG, "onServiceConnected");
+        LogUtil.d(TAG, "onServiceConnected");
         service = this;
         //代码设置service 也可以在清单文件中设置
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
@@ -52,7 +52,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
-        Log.d(TAG, "com.eg.android.AlipayGphone");
+        LogUtil.d(TAG, "onAccessibilityEvent");
         //判断辅助服务触发的事件是否是通知栏改变事件
         if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) {
 
@@ -66,22 +66,13 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
                 CharSequence title = notification.extras.getCharSequence(Notification.EXTRA_TITLE);
                 CharSequence text = notification.extras.getCharSequence(Notification.EXTRA_TEXT);
                 CharSequence ticker = notification.tickerText;//支付宝专用
-                Log.d(TAG, "NotificationCaptureByAccessibility-->"
-                        + "\napp pkn"
-                        + event.getPackageName()
-                        + "\nTitle:"
-                        + title
-                        + "\nText:"
-                        + text);
-
-                mSpeaker.speak("哈哈" + text);
 
                 //开始发送业务逻辑
                 String packageName = event.getPackageName().toString();
                 if (packageName.equals(WECHAT_NAME)) {
                     exchangeByWechat(title, text);
                 } else if (packageName.equals(ALIPAY_NAME)) {
-                    exchangeByAliPay(title, ticker);
+                    exchangeByAliPay(ticker);
                 }
             }
         }
@@ -91,25 +82,25 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
      * 阿里支付转账情况
      * "你有1笔新的资金到账，请点击查看详情"
      */
-    private void exchangeByAliPay(CharSequence title, CharSequence text) {
-        String textStr = text.toString();
+    private void exchangeByAliPay(CharSequence text) {
+        String tickertStr = text.toString();
 
         //转账的情况
-        if (textStr.contains("到账")) {
-            String payTime = System.currentTimeMillis() + "";
-            UserRequest.uploadAliExchangeInfo(this, payTime, "", "", new AppNetCallback() {
-                @Override
-                public void onSuccess(String data, String msg) {
-                    LogUtil.d(TAG, "成功[" + msg + msg + "]");
-                }
+        if (tickertStr.contains("资金到账")) {
 
-                @Override
-                public void onFailed(Exception e, int id, String msg) {
-                    LogUtil.e(TAG, "失败[" + id + ",msg" + msg + "]");
-                }
-            });
-        } else if () {
-            //固定金额二维码情况
+            //你有一笔新的资金到账，请点击查看详情
+            String payTime = System.currentTimeMillis() + "";
+            UserRequest.uploadAliExchangeInfo(this, payTime, "", "", mCallback);
+            mSpeaker.speak("收到支付宝转账");
+        } else if (tickertStr.contains("通过扫码向你付款")) {
+
+            //固定金额二维码情况：“四库全输通过扫码向你付款0.01元”
+            String payTime = System.currentTimeMillis() + "";
+            int indexBegin = tickertStr.indexOf("款");
+            int indexEnd = tickertStr.length() - 1;
+            String moneyStr = tickertStr.substring(indexBegin + 1, indexEnd);
+            UserRequest.uploadAliExchangeInfo(this, payTime, moneyStr, "", mCallback);
+            mSpeaker.speak("支付宝收款" + moneyStr + "元");
         }
     }
 
@@ -130,43 +121,36 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
         if (TextUtils.isEmpty(textStr) || TextUtils.isEmpty(titleStr)) {
             return;
         }
+
         //1.固定额收款二维码，title="微信支付"，text="微信支付收款0.01元"
         if (titleStr.equals("微信支付") && textStr.contains("收款")) {
             String moneyStr = textStr.substring(6, textStr.length() - 1);
             String payTime = System.currentTimeMillis() + "";
-            UserRequest.uploadWechatExchangeInfo(this, payTime, moneyStr, null,
-                    new AppNetCallback() {
-                        @Override
-                        public void onSuccess(String data, String msg) {
-                            LogUtil.d(TAG, "成功[" + msg + msg + "]");
-                        }
-
-                        @Override
-                        public void onFailed(Exception e, int id, String msg) {
-                            LogUtil.e(TAG, "失败[" + id + ",msg" + msg + "]");
-                        }
-                    });
+            UserRequest.uploadWechatExchangeInfo(this, payTime, moneyStr, null, mCallback);
+            mSpeaker.speak("微信收款" + moneyStr + "元");
         }
 
         //2.个人转账信息,只能获取到谁（微信名）转账了，没有金额提示"doubleSo3:[转账]请你确认收钱"
-        if (title != null) {
+        if (titleStr != null && titleStr.contains("[转账]")) {
             String fromPersonName = title.toString();
             String payTime = System.currentTimeMillis() + "";
             String payExtra = "fromUserName:" + fromPersonName;
-            UserRequest.uploadWechatExchangeInfo(this, payTime, null, payExtra,
-                    new AppNetCallback() {
-                        @Override
-                        public void onSuccess(String data, String msg) {
-                            LogUtil.d(TAG, "成功[" + msg + msg + "]");
-                        }
-
-                        @Override
-                        public void onFailed(Exception e, int id, String msg) {
-                            LogUtil.e(TAG, "失败[" + id + ",msg" + msg + "]");
-                        }
-                    });
+            UserRequest.uploadWechatExchangeInfo(this, payTime, null, payExtra, mCallback);
+            mSpeaker.speak("收到微信转账");
         }
     }
+
+    AppNetCallback mCallback = new AppNetCallback() {
+        @Override
+        public void onSuccess(String data, String msg) {
+            LogUtil.d(TAG, "成功[" + msg + msg + "]");
+        }
+
+        @Override
+        public void onFailed(Exception e, int id, String msg) {
+            LogUtil.e(TAG, "失败[" + id + ",msg" + msg + "]");
+        }
+    };
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

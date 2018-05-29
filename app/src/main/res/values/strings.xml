@@ -14,7 +14,7 @@
     completions."
   </string>
 
-  <string name="accessibility_description">商户支付管理系统</string>
+  <string name="accessibility_description">万户宝-需要打开</string>
   <string name="account">账号：</string>
   <string name="account_hint">请输入您的账号</string>
   <string name="password">密码：</string>
@@ -22,4 +22,5 @@
   <string name="login">登陆</string>
   <string name="sign_in">注册</string>
   <string name="today_income">今日账号收入(元)</string>
+  <string name="balance_formate">余额:%1s元</string>
 </resources>

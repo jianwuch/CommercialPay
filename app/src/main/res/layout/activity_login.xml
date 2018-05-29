@@ -104,6 +104,7 @@
         android:background="@drawable/shape_btn_bg"
         android:text="@string/sign_in"
         android:textColor="@android:color/white"
-        android:textSize="16dp" />
+        android:textSize="16dp"
+        android:visibility="gone"/>
   </LinearLayout>
 </LinearLayout>

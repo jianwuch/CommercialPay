@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.gsd.idreamsky.weplay.base.BaseActivity;
 import com.gsd.idreamsky.weplay.utils.ToastUtil;
+import com.jianwu.commercialpay.config.Config;
 import com.jianwu.commercialpay.net.AppNetCallback;
 import com.jianwu.commercialpay.net.EncriptRequest;
 import com.jianwu.commercialpay.net.UserRequest;
@@ -25,14 +27,10 @@ import butterknife.OnClick;
  */
 public class LoginActivity extends BaseActivity {
 
-    @BindView(R.id.account)
-    EditText account;
-    @BindView(R.id.password)
-    EditText password;
-    @BindView(R.id.btn_login)
-    Button btnLogin;
-    @BindView(R.id.btn_sign_in)
-    Button btnSignIn;
+    @BindView(R.id.account) EditText account;
+    @BindView(R.id.password) EditText password;
+    @BindView(R.id.btn_login) Button btnLogin;
+    @BindView(R.id.btn_sign_in) Button btnSignIn;
 
     @Override
     public int getContentLayoutId() {
@@ -64,7 +62,6 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
-
         UserRequest.login(this, nameStr, passwordStr, new AppNetCallback() {
             @Override
             public void onSuccess(String data, String msg) {
@@ -72,12 +69,23 @@ public class LoginActivity extends BaseActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(data);
                     String token = jsonObject.optString("token");
+                    String orderUrl = jsonObject.optString("order_url");
+                    String rechargeUrl = jsonObject.optString("recharge_url");
                     if (TextUtils.isEmpty(token)) {
                         ToastUtil.showShort("登录成功,但是Token为空");
                     } else {
 
                         //保存token
                         EncriptRequest.token = token;
+
+                        if (!TextUtils.isEmpty(orderUrl)) {
+                            Config.order_url = orderUrl;
+                        }
+
+                        if (!TextUtils.isEmpty(rechargeUrl)) {
+                            Config.rechare_url = rechargeUrl;
+                        }
+
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }

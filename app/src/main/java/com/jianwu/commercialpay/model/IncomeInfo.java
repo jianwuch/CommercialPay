@@ -22,4 +22,5 @@ public class IncomeInfo {
     public String yesterdayOrders;//昨日订单
     public String sevenOrders;//7日订单
     public String monthOrders;//月订单
+    public String balance;//余额
 }

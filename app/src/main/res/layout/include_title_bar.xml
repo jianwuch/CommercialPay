@@ -14,7 +14,8 @@
       android:layout_height="match_parent"
       android:paddingLeft="13dp"
       android:paddingRight="10dp"
-      android:src="@drawable/back_icon" />
+      android:src="@drawable/back_icon"
+      android:visibility="gone"/>
 
   <TextView
       android:id="@+id/actionbar_title"
