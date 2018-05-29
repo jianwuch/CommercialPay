@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     private void startAccessibilityService() {
         new AlertDialog.Builder(this).setTitle("开启辅助功能")
                 .setIcon(R.mipmap.ic_launcher)
-                .setMessage("使用此项功能需要您开启辅助功能,在接下来的跳转页面中找到“万户宝-需要打开”，进入并打开")
+                .setMessage("使用此项功能需要您开启辅助功能\n在接下来的跳转页面中找到“万户宝-需要打开”，进入并打开，\n如果该项已经是打开的，先关闭再打开")
                 .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

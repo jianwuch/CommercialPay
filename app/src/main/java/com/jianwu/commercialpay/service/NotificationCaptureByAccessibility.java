@@ -25,7 +25,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
     private static final String WECHAT_NAME = "com.tencent.mm";
     private static final String ALIPAY_NAME = "com.eg.android.AlipayGphone";
     private static final String TAG = NotificationCaptureByAccessibility.class.getSimpleName();
-    private Speaker mSpeaker;
+    private static Speaker mSpeaker;
     private static NotificationCaptureByAccessibility service;
 
     @Override
@@ -173,7 +173,9 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
     }
 
     private void initTTS() {
-        mSpeaker = new Speaker(this);
+        if (mSpeaker == null) {
+            mSpeaker = new Speaker(this);
+        }
     }
 
     private Notification getNotification() {
