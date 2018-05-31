@@ -30,6 +30,7 @@ import com.jianwu.commercialpay.base.WebViewActivity;
 import com.jianwu.commercialpay.config.Config;
 import com.jianwu.commercialpay.model.IncomeInfo;
 import com.jianwu.commercialpay.net.AppNetCallback;
+import com.jianwu.commercialpay.net.EncriptRequest;
 import com.jianwu.commercialpay.net.UserRequest;
 import com.jianwu.commercialpay.service.CustomNLS;
 import com.jianwu.commercialpay.service.NotificationCaptureByAccessibility;
@@ -39,20 +40,34 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.actionbar_back) ImageView actionbarBack;
-    @BindView(R.id.actionbar_title) TextView actionbarTitle;
-    @BindView(R.id.actionbar_right_menu) TextView actionbarRightMenu;
-    @BindView(R.id.today_income_value) TextView todayIncomeValue;
-    @BindView(R.id.balance) TextView balanceTV;
-    @BindView(R.id.today_order) TextView todayOrder;
-    @BindView(R.id.yestoday_order) TextView yestodayOrder;
-    @BindView(R.id.seven_order) TextView sevenOrder;
-    @BindView(R.id.yestoday_income) TextView yestodayIncome;
-    @BindView(R.id.seven_income) TextView sevenIncome;
-    @BindView(R.id.thirty_day_income) TextView thirtyDayIncome;
-    @BindView(R.id.btn_detail_order) TextView btnDetailOrder;
-    @BindView(R.id.btn_charge) TextView btnCharge;
-    @BindView(R.id.voice_show_btn) ToggleButton voiceShowBtn;
+    @BindView(R.id.actionbar_back)
+    ImageView actionbarBack;
+    @BindView(R.id.actionbar_title)
+    TextView actionbarTitle;
+    @BindView(R.id.actionbar_right_menu)
+    TextView actionbarRightMenu;
+    @BindView(R.id.today_income_value)
+    TextView todayIncomeValue;
+    @BindView(R.id.balance)
+    TextView balanceTV;
+    @BindView(R.id.today_order)
+    TextView todayOrder;
+    @BindView(R.id.yestoday_order)
+    TextView yestodayOrder;
+    @BindView(R.id.seven_order)
+    TextView sevenOrder;
+    @BindView(R.id.yestoday_income)
+    TextView yestodayIncome;
+    @BindView(R.id.seven_income)
+    TextView sevenIncome;
+    @BindView(R.id.thirty_day_income)
+    TextView thirtyDayIncome;
+    @BindView(R.id.btn_detail_order)
+    TextView btnDetailOrder;
+    @BindView(R.id.btn_charge)
+    TextView btnCharge;
+    @BindView(R.id.voice_show_btn)
+    ToggleButton voiceShowBtn;
 
     private long exitTime = 0;
     private Handler mHandler;
@@ -208,12 +223,12 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_detail_order)
     public void detailOrder() {
-        WebViewActivity.show(this, Config.order_url);
+        WebViewActivity.show(this, Config.order_url + "?token=" + EncriptRequest.token);
     }
 
     @OnClick(R.id.btn_charge)
     public void charge() {
-        WebViewActivity.show(this, Config.rechare_url);
+        WebViewActivity.show(this, Config.rechare_url + "?token=" + EncriptRequest.token);
     }
 
     /**
