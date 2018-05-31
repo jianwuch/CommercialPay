@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import com.gsd.idreamsky.weplay.utils.LogUtil;
+import com.gsd.idreamsky.weplay.utils.ToastUtil;
 import com.jianwu.commercialpay.R;
 import com.jianwu.commercialpay.net.AppNetCallback;
 import com.jianwu.commercialpay.net.UserRequest;
@@ -84,6 +85,10 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
      */
     private void exchangeByAliPay(CharSequence text) {
         String tickertStr = text.toString();
+        if (TextUtils.isEmpty(tickertStr)) {
+            ToastUtil.showShort("收到支付宝通知，但是信息null");
+            return;
+        }
 
         //转账的情况
         if (tickertStr.contains("资金到账")) {
@@ -119,6 +124,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
         }
 
         if (TextUtils.isEmpty(textStr) || TextUtils.isEmpty(titleStr)) {
+            ToastUtil.showShort("收到微信通知，但是信息null");
             return;
         }
 
@@ -144,11 +150,13 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
         @Override
         public void onSuccess(String data, String msg) {
             LogUtil.d(TAG, "成功[" + msg + msg + "]");
+            ToastUtil.showShort("成功[" + msg + msg + "]");
         }
 
         @Override
         public void onFailed(Exception e, int id, String msg) {
             LogUtil.e(TAG, "失败[" + id + ",msg" + msg + "]");
+            ToastUtil.showShort("失败[" + id + ",msg" + msg + "]");
         }
     };
 
