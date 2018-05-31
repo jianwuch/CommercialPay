@@ -4,7 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
 import android.widget.Toast;
-import com.jianwu.commercialpay.MainActivity;
+
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -40,6 +40,7 @@ public class Speaker implements TextToSpeech.OnInitListener {
             if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE
                     && result != TextToSpeech.LANG_AVAILABLE) {
                 Toast.makeText(mContext, "当前手机不支持语音朗读", Toast.LENGTH_SHORT).show();
+                ready = false;
                 return;
             }
             ready = true;

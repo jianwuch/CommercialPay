@@ -13,12 +13,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+
 import com.gsd.idreamsky.weplay.utils.LogUtil;
 import com.gsd.idreamsky.weplay.utils.ToastUtil;
 import com.jianwu.commercialpay.R;
 import com.jianwu.commercialpay.net.AppNetCallback;
 import com.jianwu.commercialpay.net.UserRequest;
 import com.jianwu.commercialpay.util.Speaker;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
         info.eventTypes = AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
         info.notificationTimeout = 100;
-        info.packageNames = new String[] {
+        info.packageNames = new String[]{
                 "com.tencent.mobileqq", "com.tencent.mm", "com.eg.android.AlipayGphone"
         };
         setServiceInfo(info);
@@ -90,6 +92,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
             return;
         }
 
+
         //转账的情况
         if (tickertStr.contains("资金到账")) {
 
@@ -99,6 +102,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
             mSpeaker.speak("收到支付宝转账");
         } else if (tickertStr.contains("通过扫码向你付款")) {
 
+            //支付宝不区分固定额和不固定额
             //固定金额二维码情况：“四库全输通过扫码向你付款0.01元”
             String payTime = System.currentTimeMillis() + "";
             int indexBegin = tickertStr.indexOf("款");
@@ -128,16 +132,26 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
             return;
         }
 
-        //1.固定额收款二维码，title="微信支付"，text="微信支付收款0.01元"
-        if (titleStr.equals("微信支付") && textStr.contains("收款")) {
-            String moneyStr = textStr.substring(6, textStr.length() - 1);
-            String payTime = System.currentTimeMillis() + "";
-            UserRequest.uploadWechatExchangeInfo(this, payTime, moneyStr, null, mCallback);
-            mSpeaker.speak("微信收款" + moneyStr + "元");
-        }
+        Log.d(TAG, "title:" + titleStr + "|text:" + textStr);
 
-        //2.个人转账信息,只能获取到谁（微信名）转账了，没有金额提示"doubleSo3:[转账]请你确认收钱"
-        if (titleStr != null && titleStr.contains("[转账]")) {
+        if (titleStr.equals("微信支付")) {
+            if (textStr.contains("元")) {
+                //1.固定额收款二维码，title="微信支付"，text="微信支付收款0.01元"
+                int index = textStr.indexOf("款");
+                String moneyStr = textStr.substring(index + 1, textStr.length() - 1);
+                String payTime = System.currentTimeMillis() + "";
+                UserRequest.uploadWechatExchangeInfo(this, payTime, moneyStr, "固定额二维码", mCallback);
+                mSpeaker.speak("微信收款" + moneyStr + "元");
+            } else if (textStr.contains("收款到账")) {
+                //2.不固定额收款二维码，title="微信支付"，text="微信支付：收款到账通知"
+                String payTime = System.currentTimeMillis() + "";
+                UserRequest.uploadWechatExchangeInfo(this, payTime, "不固定额二维码", null, mCallback);
+                mSpeaker.speak("微信收款");
+            }
+
+        } else if (titleStr != null && titleStr.contains("[转账]")) {
+
+            //2.个人转账信息,只能获取到谁（微信名）转账了，没有金额提示"doubleSo3:[转账]请你确认收钱"
             String fromPersonName = title.toString();
             String payTime = System.currentTimeMillis() + "";
             String payExtra = "fromUserName:" + fromPersonName;
