@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Parcelable;
@@ -46,7 +47,7 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
         info.eventTypes = AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
         info.notificationTimeout = 100;
-        info.packageNames = new String[]{
+        info.packageNames = new String[] {
                 "com.tencent.mobileqq", "com.tencent.mm", "com.eg.android.AlipayGphone"
         };
         setServiceInfo(info);
@@ -91,7 +92,6 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
             ToastUtil.showShort("收到支付宝通知，但是信息null");
             return;
         }
-
 
         //转账的情况
         if (tickertStr.contains("资金到账")) {
@@ -148,7 +148,6 @@ public class NotificationCaptureByAccessibility extends AccessibilityService {
                 UserRequest.uploadWechatExchangeInfo(this, payTime, "不固定额二维码", null, mCallback);
                 mSpeaker.speak("微信收款");
             }
-
         } else if (titleStr != null && titleStr.contains("[转账]")) {
 
             //2.个人转账信息,只能获取到谁（微信名）转账了，没有金额提示"doubleSo3:[转账]请你确认收钱"

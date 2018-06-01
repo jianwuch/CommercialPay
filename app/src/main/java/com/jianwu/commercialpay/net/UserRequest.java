@@ -57,6 +57,8 @@ public class UserRequest {
         map.put("pay_time", payTime);
         if (!TextUtils.isEmpty(price)) {
             map.put("price", price);
+        } else {
+            map.put("price", "0");
         }
         map.put("pay_type", payType + "");
         if (!TextUtils.isEmpty(payExtra)) {
